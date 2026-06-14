@@ -1,0 +1,20 @@
+{
+    "101": {
+        "name": "Virat",
+        "grades": {
+            "Math": 85.0
+        }
+    },
+    "102": {
+        "name": "Rahul",
+        "grades": {
+            "Math": 90.0
+        }
+    },
+    "103": {
+        "name": "Varun",
+        "grades": {
+            "Math": 77.0
+        }
+    }
+}

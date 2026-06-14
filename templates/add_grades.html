@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Grades</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Add Grades</h1>
+
+<form method="POST">
+
+    Roll Number:
+    <input type="text" name="roll" required>
+
+    <br><br>
+
+    Subject:
+    <input type="text" name="subject" required>
+
+    <br><br>
+
+    Marks:
+    <input type="number" name="marks" required>
+
+    <br><br>
+
+    <input type="submit" value="Add Grade">
+
+</form>
+
+<br>
+
+<a href="/">Back to Home</a>
+
+</body>
+</html>
