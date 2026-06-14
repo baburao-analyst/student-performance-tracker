@@ -21,7 +21,7 @@ def add_student():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT * FROM students WHERE roll_number=%s",
+            "SELECT * FROM students WHERE roll_number=?",
             (roll,)
         )
 
@@ -30,7 +30,7 @@ def add_student():
             return "Roll Number already exists!"
 
         cursor.execute(
-            "INSERT INTO students (roll_number, name) VALUES (%s, %s)",
+            "INSERT INTO students (roll_number, name) VALUES (?, ?)",
             (roll, name)
         )
 
@@ -46,7 +46,7 @@ def add_student():
 def view_students():
 
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     cursor.execute(
         "SELECT * FROM students"
@@ -78,7 +78,7 @@ def add_grades():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT * FROM students WHERE roll_number=%s",
+            "SELECT * FROM students WHERE roll_number=?",
             (roll,)
         )
 
@@ -90,7 +90,7 @@ def add_grades():
             """
             INSERT INTO grades
             (roll_number, subject, marks)
-            VALUES (%s, %s, %s)
+            VALUES (?, ?, ?)
             """,
             (roll, subject, marks)
         )
