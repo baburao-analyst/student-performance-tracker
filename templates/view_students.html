@@ -2,37 +2,78 @@
 <html>
 <head>
     <title>View Students</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<h1>All Students</h1>
+<div class="page-container">
 
-<table border="1">
+<h1>Student Performance Tracker</h1>
+
+<div class="table-card">
+
+<h2>View Students</h2>
+
+<table>
 
 <tr>
     <th>Roll Number</th>
     <th>Name</th>
     <th>Subject</th>
     <th>Marks</th>
+    <th>Action</th>
 </tr>
+
+{% set ns = namespace(previous_roll='') %}
 
 {% for student in students %}
 
 <tr>
-    <td>{{ student.roll_number }}</td>
-    <td>{{ student.name }}</td>
-    <td>{{ student.subject or '-' }}</td>
-    <td>{{ student.marks or '-' }}</td>
+
+    {% if ns.previous_roll != student[0] %}
+
+        <td>{{ student[0] }}</td>
+        <td>{{ student[1] }}</td>
+
+    {% else %}
+
+        <td></td>
+        <td></td>
+
+    {% endif %}
+
+    <td>{{ student[3] }}</td>
+
+    <td>{{ student[4] }}</td>
+
+    <td>
+
+        <a
+        href="/delete_grade/{{ student[2] }}"
+        class="delete-btn">
+
+        Delete
+
+        </a>
+
+    </td>
+
 </tr>
+
+{% set ns.previous_roll = student[0] %}
 
 {% endfor %}
 
 </table>
 
-<br>
+</div>
 
-<a href="/">Back to Home</a>
+<a href="/" class="back-btn">
+← Back to Home
+</a>
+
+</div>
 
 </body>
 </html>

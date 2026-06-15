@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page-container">
+
+<h1>Student Performance Tracker</h1>
+
+<div class="form-card">
+
+{% if count == 1 %}
+
+<h2>⚠ Confirm Student Deletion</h2>
+
+<p>
+Are you sure you want to delete this student?
+</p>
+
+{% else %}
+
+<h2>⚠ Confirm Subject Deletion</h2>
+
+<p>
+Are you sure you want to delete this subject?
+</p>
+
+{% endif %}
+
+<br>
+
+<p>
+<strong>Roll Number:</strong>
+{{ grade[0] }}
+</p>
+
+<p>
+<strong>Subject:</strong>
+{{ grade[1] }}
+</p>
+
+<p>
+<strong>Marks:</strong>
+{{ grade[2] }}
+</p>
+
+<br>
+
+<form method="POST">
+
+<button type="submit">
+Yes, Delete
+</button>
+
+</form>
+
+<br>
+
+<a href="/view_students" class="back-btn">
+Cancel
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>

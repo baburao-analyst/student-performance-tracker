@@ -37,7 +37,10 @@ def add_student():
         conn.commit()
         conn.close()
 
-        return f"Student {name} added successfully!"
+        return render_template(
+            "success.html",
+            message=f"Student {name} added successfully!"
+        )
 
     return render_template("add_student.html")
 
@@ -49,13 +52,16 @@ def view_students():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT s.roll_number,
-               s.name,
-               g.subject,
-               g.marks
+        SELECT
+            s.roll_number,
+            s.name,
+            g.id,
+            g.subject,
+            g.marks
         FROM students s
         LEFT JOIN grades g
         ON s.roll_number = g.roll_number
+        ORDER BY s.roll_number
     """)
 
     students = cursor.fetchall()
@@ -104,7 +110,10 @@ def add_grades():
         conn.commit()
         conn.close()
 
-        return "Grade added successfully!"
+        return render_template(
+            "success.html",
+            message=f"Grade added successfully for Roll Number {roll}!"
+        )
 
     return render_template("add_grades.html")
 
@@ -115,21 +124,24 @@ def class_average():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "SELECT AVG(marks) FROM grades"
-    )
+    cursor.execute("""
+        SELECT s.roll_number,
+               s.name,
+               AVG(g.marks) AS average_marks
+        FROM students s
+        LEFT JOIN grades g
+        ON s.roll_number = g.roll_number
+        GROUP BY s.roll_number, s.name
+    """)
 
-    result = cursor.fetchone()
+    averages = cursor.fetchall()
 
     conn.close()
 
-    average = round(result[0], 2) if result[0] else 0
-
     return render_template(
         "class_average.html",
-        average=average
+        averages=averages
     )
-
 
 @app.route("/topper")
 def topper():
@@ -161,6 +173,82 @@ def topper():
         name=topper[1],
         roll=topper[0],
         average=round(topper[2], 2)
+    )
+
+
+@app.route("/delete_grade/<int:grade_id>", methods=["GET", "POST"])
+def delete_grade(grade_id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT roll_number, subject, marks
+        FROM grades
+        WHERE id = ?
+        """,
+        (grade_id,)
+    )
+
+    grade = cursor.fetchone()
+
+    if not grade:
+        conn.close()
+        return "Grade not found."
+
+    roll = grade[0]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM grades
+        WHERE roll_number = ?
+        """,
+        (roll,)
+    )
+
+    count = cursor.fetchone()[0]
+
+    if request.method == "POST":
+
+        if count == 1:
+
+            cursor.execute(
+                "DELETE FROM grades WHERE id = ?",
+                (grade_id,)
+            )
+
+            cursor.execute(
+                "DELETE FROM students WHERE roll_number = ?",
+                (roll,)
+            )
+
+            message = "Student deleted successfully!"
+
+        else:
+
+            cursor.execute(
+                "DELETE FROM grades WHERE id = ?",
+                (grade_id,)
+            )
+
+            message = "Subject deleted successfully!"
+
+        conn.commit()
+        conn.close()
+
+        return render_template(
+            "success.html",
+            message=message
+        )
+
+    conn.close()
+
+    return render_template(
+        "confirm_delete_grade.html",
+        grade=grade,
+        count=count
     )
 
 

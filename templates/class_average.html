@@ -2,15 +2,52 @@
 <html>
 <head>
     <title>Class Average</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<h1>Class Average</h1>
+<div class="page-container">
 
-<h2>{{ average }}</h2>
+<h1>Student Performance Tracker</h1>
 
-<a href="/">Back to Home</a>
+<div class="table-card">
+
+<h2>Student Averages</h2>
+
+<table>
+
+<tr>
+    <th>Roll Number</th>
+    <th>Name</th>
+    <th>Average Marks</th>
+</tr>
+
+{% for student in averages %}
+
+<tr>
+    <td>{{ student[0] }}</td>
+    <td>{{ student[1] }}</td>
+    <td>
+        {% if student[2] %}
+            {{ "%.2f"|format(student[2]) }}
+        {% else %}
+            No Grades
+        {% endif %}
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<a href="/" class="back-btn">
+← Back to Home
+</a>
+
+</div>
 
 </body>
 </html>

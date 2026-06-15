@@ -6,32 +6,47 @@
 </head>
 <body>
 
-<h1>Add Grades</h1>
+<div class="page-container">
+
+<h1>Student Performance Tracker</h1>
+
+<div class="form-card">
+
+<h2>Add Grades</h2>
 
 <form method="POST">
 
-    Roll Number:
-    <input type="text" name="roll" required>
+<input
+type="text"
+name="roll"
+placeholder="Roll Number"
+required>
 
-    <br><br>
+<input
+type="text"
+name="subject"
+placeholder="Subject"
+required>
 
-    Subject:
-    <input type="text" name="subject" required>
+<input
+type="number"
+name="marks"
+placeholder="Marks"
+required>
 
-    <br><br>
-
-    Marks:
-    <input type="number" name="marks" required>
-
-    <br><br>
-
-    <input type="submit" value="Add Grade">
+<button type="submit">
+Add Grade
+</button>
 
 </form>
 
-<br>
+</div>
 
-<a href="/">Back to Home</a>
+<a href="/" class="back-btn">
+← Back to Home
+</a>
+
+</div>
 
 </body>
 </html>
