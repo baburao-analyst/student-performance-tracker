@@ -48,9 +48,15 @@ def view_students():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "SELECT * FROM students"
-    )
+    cursor.execute("""
+        SELECT s.roll_number,
+               s.name,
+               g.subject,
+               g.marks
+        FROM students s
+        LEFT JOIN grades g
+        ON s.roll_number = g.roll_number
+    """)
 
     students = cursor.fetchall()
 

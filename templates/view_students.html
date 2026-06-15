@@ -13,6 +13,8 @@
 <tr>
     <th>Roll Number</th>
     <th>Name</th>
+    <th>Subject</th>
+    <th>Marks</th>
 </tr>
 
 {% for student in students %}
@@ -20,6 +22,8 @@
 <tr>
     <td>{{ student.roll_number }}</td>
     <td>{{ student.name }}</td>
+    <td>{{ student.subject or '-' }}</td>
+    <td>{{ student.marks or '-' }}</td>
 </tr>
 
 {% endfor %}
