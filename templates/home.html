@@ -2,7 +2,14 @@
 <html>
 <head>
     <title>Student Performance Tracker</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>      
 </head>
 <body>
 
@@ -14,42 +21,83 @@
         Track. Analyze. Achieve.
     </p>
 
+    <!-- Statistics Cards -->
+
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <i class="fas fa-user-graduate"></i>
+            <h2>{{ total_students }}</h2>
+            <p>Total Students</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-book"></i>
+            <h2>{{ total_subjects }}</h2>
+            <p>Total Subjects</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-chart-line"></i>
+            <h2>{{ class_average }}</h2>
+            <p>Class Average</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-trophy"></i>
+            <h2>{{ topper_name }}</h2>
+            <p>Top Student</p>
+        </div>
+
+    </div>
+
+    <!-- Dashboard -->
+
     <div class="dashboard">
 
         <a href="/add_student" class="card blue">
-            <h2>👨‍🎓</h2>
+            <h2><i class="fas fa-user-plus"></i></h2>
             <h3>Add Student</h3>
             <p>Register a new student</p>
         </a>
 
         <a href="/add_grades" class="card green">
-            <h2>📝</h2>
+            <h2><i class="fas fa-pen"></i></h2>
             <h3>Add Grades</h3>
             <p>Manage student grades</p>
         </a>
 
         <a href="/view_students" class="card purple">
-            <h2>👥</h2>
+            <h2><i class="fas fa-users"></i></h2>
             <h3>View Students</h3>
             <p>Browse records</p>
         </a>
 
         <a href="/class_average" class="card orange">
-            <h2>📊</h2>
+            <h2><i class="fas fa-chart-bar"></i></h2>
             <h3>Class Average</h3>
             <p>Performance statistics</p>
         </a>
 
         <a href="/topper" class="card pink">
-            <h2>🏆</h2>
+            <h2><i class="fas fa-crown"></i></h2>
             <h3>Find Topper</h3>
             <p>Top performing student</p>
         </a>
 
     </div>
 
+    <div class="chart-card">
+
+        <h2>📊 Student Performance Chart</h2>
+
+        <canvas id="studentChart"></canvas>
+
+    </div>
+
     <div class="footer-box">
         <h3>Empowering Education</h3>
+
         <p>
             A simple way to track student performance
             and celebrate achievements.
@@ -57,6 +105,52 @@
     </div>
 
 </div>
+
+<script>
+
+const ctx = document.getElementById('studentChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: {{ names|tojson }},
+
+        datasets: [{
+
+            label: 'Average Marks',
+
+            data: {{ averages|tojson }}
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                max: 100
+            }
+        }
+    }
+});
+
+</script>
 
 </body>
 </html>

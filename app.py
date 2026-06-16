@@ -6,8 +6,61 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("home.html")
 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM students")
+    total_students = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM grades")
+    total_subjects = cursor.fetchone()[0]
+
+    cursor.execute("SELECT AVG(marks) FROM grades")
+    avg_result = cursor.fetchone()[0]
+
+    class_average = round(avg_result, 2) if avg_result else 0
+
+    cursor.execute("""
+        SELECT s.name
+        FROM students s
+        JOIN grades g
+        ON s.roll_number = g.roll_number
+        GROUP BY s.roll_number
+        ORDER BY AVG(g.marks) DESC
+        LIMIT 1
+    """)
+
+    topper = cursor.fetchone()
+    topper_name = topper[0] if topper else "N/A"
+
+    # Chart Data
+    cursor.execute("""
+        SELECT s.name,
+               ROUND(AVG(g.marks),2)
+        FROM students s
+        JOIN grades g
+        ON s.roll_number = g.roll_number
+        GROUP BY s.roll_number
+        ORDER BY AVG(g.marks) DESC
+    """)
+
+    chart_data = cursor.fetchall()
+
+    names = [row[0] for row in chart_data]
+    averages = [row[1] for row in chart_data]
+
+    conn.close()
+
+    return render_template(
+        "home.html",
+        total_students=total_students,
+        total_subjects=total_subjects,
+        class_average=class_average,
+        topper_name=topper_name,
+        names=names,
+        averages=averages
+    )
 
 @app.route("/add_student", methods=["GET", "POST"])
 def add_student():
