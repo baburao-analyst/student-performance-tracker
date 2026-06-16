@@ -262,16 +262,25 @@ tr:hover{
 
     color:white;
 
-    padding:8px 14px;
+    padding:10px 18px;
 
-    border-radius:8px;
+    border-radius:10px;
 
     text-decoration:none;
+
+    display:inline-block;
+
+    transition:0.3s;
 }
 
 .delete-btn:hover{
 
-    background:#b91c1c;
+    background:#991b1b;
+
+    transform:scale(1.05);
+
+    box-shadow:
+    0 0 12px rgba(220,38,38,0.5);
 }
 
 .stats-container{
@@ -448,4 +457,88 @@ table td{
 #studentChart{
 
     max-height:400px;
+}
+
+.table-card{
+
+    overflow-x:auto;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    border-radius:15px;
+
+    overflow:hidden;
+}
+
+th{
+
+    background:#334155;
+
+    color:white;
+
+    font-weight:600;
+
+    letter-spacing:0.5px;
+}
+
+tr{
+
+    transition:0.2s;
+}
+
+tr:hover{
+
+    background:
+    rgba(255,255,255,0.05);
+}
+
+td{
+
+    color:#f1f5f9;
+}
+
+@media(max-width:900px){
+
+    .stats-container{
+
+        flex-direction:column;
+
+        align-items:center;
+    }
+
+    .dashboard{
+
+        flex-direction:column;
+
+        align-items:center;
+    }
+
+    .card{
+
+        width:95%;
+        max-width:350px;
+    }
+
+    .stat-card{
+
+        width:95%;
+        max-width:350px;
+    }
+
+    .page-container{
+
+        width:100%;
+    }
+
+    table{
+
+        font-size:14px;
+    }
 }
