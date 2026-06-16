@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Student</title>
+    <title>Edit Grade</title>
+
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -13,32 +14,47 @@
 
 <div class="form-card">
 
-<h2>Add Student</h2>
+<h2>Edit Grade</h2>
 
 <form method="POST">
 
-<input
-type="text"
-name="name"
-placeholder="Student Name"
-required>
+<label>Roll Number</label>
 
 <input
 type="text"
-name="roll"
-placeholder="Roll Number"
+value="{{ grade[1] }}"
+readonly>
+
+<label>Subject</label>
+
+<input
+type="text"
+name="subject"
+value="{{ grade[2] }}"
 required>
+
+<label>Marks</label>
+
+<input
+type="number"
+name="marks"
+value="{{ grade[3] }}"
+min="0"
+max="100"
+required>
+
+<br><br>
 
 <button type="submit">
-Add Student
+Update Grade
 </button>
 
 </form>
 
 </div>
 
-<a href="/" class="back-btn">
-← Back to Home
+<a href="/view_students" class="back-btn">
+← Back to Students
 </a>
 
 </div>

@@ -15,6 +15,22 @@
 
 <h2>View Students</h2>
 
+<form method="GET" action="/view_students">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by Roll Number or Name"
+        value="{{ search }}">
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+<br>
+
 <table>
 
 <tr>
@@ -48,12 +64,30 @@
 
     <td>
 
+        {% if ns.previous_roll != student[0] %}
+
+            <a
+            href="/student_report/{{ student[0] }}"
+            class="report-btn">
+            Report
+            </a>
+
+            <br><br>
+
+        {% endif %}
+
+        <a
+        href="/edit_grade/{{ student[2] }}"
+        class="edit-btn">
+        Edit
+        </a>
+
+        <br><br>
+
         <a
         href="/delete_grade/{{ student[2] }}"
         class="delete-btn">
-
         Delete
-
         </a>
 
     </td>

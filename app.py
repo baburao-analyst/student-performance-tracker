@@ -99,23 +99,45 @@ def add_student():
 
 
 @app.route("/view_students")
+@app.route("/view_students")
 def view_students():
+
+    search = request.args.get("search", "")
 
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("""
-        SELECT
-            s.roll_number,
-            s.name,
-            g.id,
-            g.subject,
-            g.marks
-        FROM students s
-        LEFT JOIN grades g
-        ON s.roll_number = g.roll_number
-        ORDER BY s.roll_number
-    """)
+    if search:
+
+        cursor.execute("""
+            SELECT
+                s.roll_number,
+                s.name,
+                g.id,
+                g.subject,
+                g.marks
+            FROM students s
+            LEFT JOIN grades g
+            ON s.roll_number = g.roll_number
+            WHERE s.roll_number LIKE ?
+               OR s.name LIKE ?
+            ORDER BY s.roll_number
+        """, (f"%{search}%", f"%{search}%"))
+
+    else:
+
+        cursor.execute("""
+            SELECT
+                s.roll_number,
+                s.name,
+                g.id,
+                g.subject,
+                g.marks
+            FROM students s
+            LEFT JOIN grades g
+            ON s.roll_number = g.roll_number
+            ORDER BY s.roll_number
+        """)
 
     students = cursor.fetchall()
 
@@ -123,7 +145,8 @@ def view_students():
 
     return render_template(
         "view_students.html",
-        students=students
+        students=students,
+        search=search
     )
 
 
@@ -302,6 +325,102 @@ def delete_grade(grade_id):
         "confirm_delete_grade.html",
         grade=grade,
         count=count
+    )
+
+
+@app.route("/student_report/<roll>")
+def student_report(roll):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM students WHERE roll_number = ?",
+        (roll,)
+    )
+
+    student = cursor.fetchone()
+
+    cursor.execute(
+        """
+        SELECT subject, marks
+        FROM grades
+        WHERE roll_number = ?
+        """,
+        (roll,)
+    )
+
+    grades = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT AVG(marks)
+        FROM grades
+        WHERE roll_number = ?
+        """,
+        (roll,)
+    )
+
+    average = cursor.fetchone()[0]
+
+    conn.close()
+
+    return render_template(
+        "student_report.html",
+        student=student,
+        grades=grades,
+        average=round(average, 2) if average else 0
+    )
+
+
+@app.route("/edit_grade/<int:grade_id>", methods=["GET", "POST"])
+def edit_grade(grade_id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if request.method == "POST":
+
+        subject = request.form["subject"]
+        marks = float(request.form["marks"])
+
+        cursor.execute(
+            """
+            UPDATE grades
+            SET subject = ?,
+                marks = ?
+            WHERE id = ?
+            """,
+            (subject, marks, grade_id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return render_template(
+            "success.html",
+            message="Grade updated successfully!"
+        )
+
+    cursor.execute(
+        """
+        SELECT id,
+               roll_number,
+               subject,
+               marks
+        FROM grades
+        WHERE id = ?
+        """,
+        (grade_id,)
+    )
+
+    grade = cursor.fetchone()
+
+    conn.close()
+
+    return render_template(
+        "edit_grade.html",
+        grade=grade
     )
 
 

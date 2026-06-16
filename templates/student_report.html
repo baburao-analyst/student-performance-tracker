@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page-container">
+
+<h1>Student Report</h1>
+
+<div class="table-card">
+
+<h2>{{ student[1] }}</h2>
+
+<p>
+<b>Roll Number:</b> {{ student[0] }}
+</p>
+
+<br>
+
+<table>
+
+<tr>
+    <th>Subject</th>
+    <th>Marks</th>
+</tr>
+
+{% for grade in grades %}
+
+<tr>
+    <td>{{ grade[0] }}</td>
+    <td>{{ grade[1] }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<h3>
+Average Marks: {{ average }}
+</h3>
+
+</div>
+
+<a href="/view_students" class="back-btn">
+← Back to Students
+</a>
+
+</div>
+
+</body>
+</html>
