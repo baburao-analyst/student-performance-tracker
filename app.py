@@ -226,29 +226,35 @@ def topper():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT s.roll_number,
-               s.name,
-               AVG(g.marks) AS avg_marks
+        SELECT
+            s.roll_number,
+            s.name,
+            AVG(g.marks) AS avg_marks
         FROM students s
         JOIN grades g
         ON s.roll_number = g.roll_number
         GROUP BY s.roll_number, s.name
-        ORDER BY avg_marks DESC
-        LIMIT 1
+        HAVING avg_marks = (
+            SELECT MAX(student_avg)
+            FROM (
+                SELECT AVG(marks) AS student_avg
+                FROM grades
+                GROUP BY roll_number
+            )
+        )
     """)
 
-    topper = cursor.fetchone()
+    toppers = cursor.fetchall()
 
     conn.close()
 
-    if not topper:
+    if not toppers:
         return "No grades available."
 
     return render_template(
         "topper.html",
-        name=topper[1],
-        roll=topper[0],
-        average=round(topper[2], 2)
+        toppers=toppers,
+        average=round(toppers[0][2], 2)
     )
 
 

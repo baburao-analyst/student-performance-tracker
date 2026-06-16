@@ -628,3 +628,14 @@ form button{
 
     margin:20px auto 0;
 }
+
+.form-card label{
+
+    display:block;
+
+    margin-top:15px;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+}
