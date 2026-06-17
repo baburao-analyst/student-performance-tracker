@@ -430,5 +430,13 @@ def edit_grade(grade_id):
     )
 
 
+@app.route("/no_grade_record")
+def no_grade_record():
+
+    return render_template(
+        "no_grade_record.html"
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)

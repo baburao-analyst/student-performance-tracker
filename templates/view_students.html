@@ -76,11 +76,21 @@
 
         {% endif %}
 
-        <a
-        href="/edit_grade/{{ student[2] }}"
+        {% if student[2] %}
+
+        <a href="/edit_grade/{{ student[2] }}"
         class="edit-btn">
-        Edit
+            Edit
         </a>
+
+        {% else %}
+
+        <a href="/no_grade_record"
+        class="edit-btn">
+            Edit
+        </a>
+
+        {% endif %}
 
         <br><br>
 

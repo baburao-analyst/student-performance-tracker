@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>No Records Found</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page-container">
+
+    <h1>Student Performance Tracker</h1>
+
+    <div class="form-card">
+
+        <h2>No Academic Records Found</h2>
+
+        <p style="margin-top:20px; text-align:left;">
+
+            This student does not have any subject
+            and marks records yet.
+
+            <br><br>
+
+            Please add subject and marks information
+            from the <b>Add Grades</b> section first.
+
+        </p>
+
+    </div>
+
+    <a href="/add_grades" class="back-btn">
+        ➕ Go to Add Grades
+    </a>
+
+    <br><br>
+
+    <a href="/" class="back-btn">
+        ← Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>
