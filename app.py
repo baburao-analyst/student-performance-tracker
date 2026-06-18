@@ -438,5 +438,13 @@ def no_grade_record():
     )
 
 
+@app.route("/no_grade_record_delete")
+def no_grade_record_delete():
+
+    return render_template(
+        "no_grade_record_delete.html"
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)

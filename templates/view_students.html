@@ -94,11 +94,21 @@
 
         <br><br>
 
-        <a
-        href="/delete_grade/{{ student[2] }}"
+        {% if student[2] %}
+
+        <a href="/delete_grade/{{ student[2] }}"
         class="delete-btn">
-        Delete
+            Delete
         </a>
+
+        {% else %}
+
+        <a href="/no_grade_record_delete"
+        class="delete-btn">
+            Delete
+        </a>
+
+        {% endif %}
 
     </td>
 
