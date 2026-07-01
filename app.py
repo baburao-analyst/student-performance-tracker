@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request
 from db import get_connection
+from init_db import create_tables
 
 app = Flask(__name__)
 
+create_tables()
 
 @app.route("/")
 def home():
