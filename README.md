@@ -15,6 +15,7 @@
 ![SQLite](https://img.shields.io/badge/SQLite-Database-blue?style=for-the-badge&logo=sqlite)
 ![HTML5](https://img.shields.io/badge/HTML5-Markup-red?style=for-the-badge&logo=html5)
 ![CSS3](https://img.shields.io/badge/CSS3-Styling-blue?style=for-the-badge&logo=css3)
+![Render](https://img.shields.io/badge/Render-Deployed-success?style=for-the-badge&logo=render)
 
 </div>
 
